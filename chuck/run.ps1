@@ -6,9 +6,16 @@ param($Request, $TriggerMetadata)
 # Write to the Azure Functions log stream.
 Write-Host "PowerShell HTTP trigger function processed a request."
 
-# Interact with query parameters or the body of the request.
-$name = ($Request.Query.Name)
+# Change the variable to that of the parameter passed to the function
+if (!($null -eq $Request.Query.Name)) {
+    $name = $Request.Query.Name
+}
+else {
+    # Set the category to dev
+    $name = "dev"
+}
 
+# Check the name variable is sane
 if (-not ($name.ToLower() -in @("animal","career","celebrity","dev","explicit","fashion","food","history","money","movie","music","political","religion","science","sport","travel"))) {
     $name = "dev"
 }
